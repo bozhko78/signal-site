@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anchor — Anxiety & Calm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8eaf0;
+    --muted: #6b7080;
+    --accent: #6b7de8;
+    --accent2: #9b6be8;
+    --radius: 16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* GLOW ORBS */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+  }
+  .orb-1 {
+    width: 600px; height: 600px;
+    background: var(--accent);
+    top: -200px; left: -100px;
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .orb-2 {
+    width: 500px; height: 500px;
+    background: var(--accent2);
+    bottom: -100px; right: -150px;
+    animation: drift 22s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes drift {
+    from { transform: translate(0, 0); }
+    to   { transform: translate(40px, 30px); }
+  }
+
+  /* LAYOUT */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(13,15,20,0.8);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    padding: 120px 0 100px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(107,125,232,0.12);
+    border: 1px solid rgba(107,125,232,0.25);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 32px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.7); }
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+  h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+  .app-store-badge {
+    display: inline-block;
+    background: var(--text);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: -0.01em;
+  }
+  .app-store-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(107,125,232,0.25);
+  }
+
+  /* CIRCLES VISUAL */
+  .circles-visual {
+    margin: 80px auto 0;
+    width: 200px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid rgba(107,125,232,0.3);
+    animation: breathe 4s ease-in-out infinite;
+  }
+  .circle:nth-child(1) { width: 60px;  height: 60px;  background: rgba(107,125,232,0.15); animation-delay: 0s; }
+  .circle:nth-child(2) { width: 110px; height: 110px; animation-delay: 0.3s; }
+  .circle:nth-child(3) { width: 160px; height: 160px; animation-delay: 0.6s; }
+  .circle:nth-child(4) { width: 200px; height: 200px; animation-delay: 0.9s; }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1);    opacity: 0.6; }
+    50%       { transform: scale(1.08); opacity: 1;   }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  p { color: var(--muted); margin-bottom: 16px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* FEATURES */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  @media (max-width: 540px) { .features { grid-template-columns: 1fr; } }
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+  .feature-card:hover { border-color: rgba(107,125,232,0.3); }
+  .feature-icon {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+
+  /* PRIVACY / SUPPORT */
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .policy-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-top: 32px;
+  }
+  .policy-block h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    margin-top: 24px;
+  }
+  .policy-block h3:first-child { margin-top: 0; }
+
+  /* SUPPORT */
+  .support-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    padding: 14px 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 400;
+    transition: border-color 0.2s;
+  }
+  .support-email:hover { border-color: rgba(107,125,232,0.4); }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* ANCHOR IDS for scroll */
+  #privacy, #support { scroll-margin-top: 80px; }
+
+  /* FADE IN */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * {
+    animation: fadeUp 0.7s ease both;
+  }
+  .hero > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero > *:nth-child(5) { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <a href="#" class="nav-logo">Anchor</a>
+    <ul class="nav-links">
+      <li><a href="#support">Support</a></li>
+      <li><a href="#privacy">Privacy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div class="hero-badge">Free · No ads · No data collected</div>
+    <h1>When anxiety rises,<br><em>find your anchor.</em></h1>
+    <p class="hero-sub">A calm, honest guide to understanding anxiety and panic — with tools that actually work.</p>
+    <a href="#" class="app-store-badge">↓ Download on the App Store</a>
+
+    <div class="circles-visual">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
+  </div>
+
+  <!-- WHAT IT IS -->
+  <section>
+    <span class="section-label">The App</span>
+    <h2>Built for the moments that feel too big.</h2>
+    <p>Anchor is a free educational tool for people dealing with anxiety, panic attacks, OCD, social anxiety, and phobias. No subscriptions. No locked content. No data collection.</p>
+    <p>It doesn't diagnose or replace therapy — it explains what's happening in your body and mind, gives you grounded tools, and points you toward professional help when you're ready.</p>
+
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">💗</div>
+        <h3>Panic Attack Relief</h3>
+        <p>One tap to guided 4-7-8 breathing and grounding cards for when it hits.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <h3>Learn the Science</h3>
+        <p>Clear, judgment-free articles on anxiety, OCD, social fear, and phobias.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>CBT Thought Record</h3>
+        <p>A guided journal to examine and reframe anxious thoughts.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌱</div>
+        <h3>Know When to Seek Help</h3>
+        <p>Honest guidance on finding a therapist and what to expect.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT -->
+  <section id="support">
+    <span class="section-label">Support</span>
+    <h2>We're here if you need us.</h2>
+    <p>Have a question, found a bug, or want to suggest something? Reach out — we read every message.</p>
+    <a href="mailto:support@anchor-app.com" class="support-email">
+      ✉️ support@anchor-app.com
+    </a>
+  </section>
+
+  <!-- PRIVACY POLICY -->
+  <section id="privacy">
+    <span class="section-label">Privacy Policy</span>
+    <h2>Your privacy is simple.</h2>
+    <p>Last updated: March 2026</p>
+
+    <div class="policy-block">
+      <h3>We collect nothing.</h3>
+      <p>Anchor does not collect, store, transmit, or share any personal data. All information you enter in the app (thought records, exercise progress) stays entirely on your device and is never sent anywhere.</p>
+
+      <h3>No accounts.</h3>
+      <p>Anchor requires no account, no sign-up, and no login. We have no way to identify you.</p>
+
+      <h3>No analytics.</h3>
+      <p>We do not use any third-party analytics, tracking, or advertising SDKs. There are no cookies, no device fingerprinting, and no behavioral tracking of any kind.</p>
+
+      <h3>No ads.</h3>
+      <p>Anchor is completely free with no advertisements. We are supported solely by optional donations from users who find the app helpful.</p>
+
+      <h3>Donations.</h3>
+      <p>Optional donations are processed entirely through Apple's App Store infrastructure (StoreKit). We do not handle or store any payment information.</p>
+
+      <h3>Children.</h3>
+      <p>Anchor does not knowingly collect information from anyone, including children under 13. Since we collect no data at all, COPPA requirements are satisfied by design.</p>
+
+      <h3>Medical disclaimer.</h3>
+      <p>Anchor is an educational tool only. It does not provide medical advice, psychological diagnosis, or therapeutic treatment. If you are experiencing a mental health crisis, please contact emergency services or a crisis helpline immediately.</p>
+
+      <h3>Contact.</h3>
+      <p>Questions about this privacy policy? Email us at <a href="mailto:support@anchor-app.com" style="color: var(--accent); text-decoration: none;">support@anchor-app.com</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>© 2026 Anchor. Made with care. · <a href="#privacy" style="color: var(--muted); text-decoration: none;">Privacy Policy</a> · <a href="#support" style="color: var(--muted); text-decoration: none;">Support</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
